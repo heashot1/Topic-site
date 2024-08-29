@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>headshot.1 home page</title>
+    <title>headshot.1 Apex</title>
     <style>
+        .header-image {
+            width: 100%;
+            height: auto;
+        }
         body {
             font-family: Arial, sans-serif;
             background: #f0f0f0;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            position: relative;
         }
         .container {
             width: 80%;
             margin: 0 auto;
             padding: 50px 0;
-        }
-        .header-image {
-            width: 100%;
-            height: auto;
+            position: relative;
+            z-index: 1;
         }
         .widget {
             background: #fff;
@@ -29,6 +32,8 @@
             margin: 20px 0;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: fadeIn 1s ease;
+            position: relative;
+            z-index: 2;
         }
         .widget:hover {
             transform: scale(1.05);
@@ -62,28 +67,115 @@
                 transform: translateY(0);
             }
         }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
     </style>
 </head>
 <body>
-    <img src="https://github.com/heashot1/Topic-site/blob/main/IMG_7784.png?raw=true" alt="idk" class="header-image">
+    
+    <canvas id="backgroundCanvas"></canvas>
+    
     <div class="container">
+        <img src="https://github.com/heashot1/Topic-site/blob/main/IMG_7784.png?raw=true" alt="idk" class="header-image">
         <div class="widget">
-            <h2>2024/08/14/14:09 First topic</h2>
-            <p>ホームページ(Github.io)を公開しました。<br>
-            このサイトでは宣伝情報などを乗せていきます。<br></p>
+            <h2>hs cheese</h2>
+            <h2>本家Apex掲載ページ<br></h2>
+        </div>
+        <div class="widget">
+            <h2>L.u.r.k. glow - External</h2>
+            <h2><p>推奨環境 -><br></h2>
+            Winver -> Win10 All ver?(recommend -> 20H22,2004...etc)<br>
+            GPU -> Maybe all GPU(recommend -> NVIDIA RTX,GTX)<br></p>
+            CPU -> Intel CPU/not tested other CPU<br>
+            <h2>機能 -><br></h2>
+
+            <h2>Glow<br></h2>
+            Glow<br>
+            Item Glow<br>
+
+            <h2>ESP<br></h2>
+            2D Box(unuseful)<br>
+            
+            <h2>MISC<br></h2>
+            Recoil Prediction cut<br>
+            Big MapRader<br>
+            Tactical Reloac<br>
+            
+            <h2>SYSTEM<br></h2>
+            日本語メニュー<br>
+
+            <h2>注意事項<br></h2>
+            一度ローダーを起動し、その後もう一度ローダーを開こうとするとブルースクリーンになります。<br>
+            再度ローダーを起動したい場合は絶対にPCを再起動してから起動してください。<br>
+            
+            <h2>価格<br></h2>
+            開発中の為未定。<br>
+
             <h2>関連リンク</h2>
             <a href="https://discord.gg/Rrc2kMcjZB">Discord</a><br>
-        </div>
-        <div class="widget">
-            <h2>hs - Ital 開発中</h2>
-            <p>ApexのGlow cheese 『Ital』を開発中です。<br>
-            詳しく開発経過を知りたい場合はDiscordをチェック↓<br></p>
-            <h2>関連リンク</h2><br>
-            <a href="https://heashot1.github.io/NAZI-page/">本家apex詳細ページ</a><br>
-            <a href="https://discord.gg/Rrc2kMcjZB">Discord</a><br>
-            <h2>関連画像</h2><br>
-            <h2><img src="https://github.com/heashot1/Topic-site/blob/main/%E7%84%A1%E9%A1%8C837_20240815132233.png?raw=true" alt="idk" class="header-image"></h2>
-        </div>
+        </div><br>
     </div>
+    <script>
+        const canvas = document.getElementById('backgroundCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        const triangles = [];
+        const numTriangles = 100;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function createTriangle(x, y, size) {
+            return { x, y, size, angle: Math.random() * Math.PI * 2 };
+        }
+
+        function init() {
+            resize();
+            for (let i = 0; i < numTriangles; i++) {
+                const size = Math.random() * 20 + 10;
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                triangles.push(createTriangle(x, y, size));
+            }
+            animate();
+        }
+
+        function drawTriangle(x, y, size, angle) {
+            ctx.beginPath();
+            ctx.moveTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
+            for (let i = 1; i <= 3; i++) {
+                ctx.lineTo(x + size * Math.cos(angle + i * (Math.PI * 2 / 3)), y + size * Math.sin(angle + i * (Math.PI * 2 / 3)));
+            }
+            ctx.closePath();
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let triangle of triangles) {
+                drawTriangle(triangle.x, triangle.y, triangle.size, triangle.angle);
+                triangle.y -= 1;
+                if (triangle.y < -triangle.size) {
+                    triangle.y = height + triangle.size;
+                    triangle.x = Math.random() * width;
+                    triangle.size = Math.random() * 20 + 10;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        init();
+    </script>
 </body>
 </html>
